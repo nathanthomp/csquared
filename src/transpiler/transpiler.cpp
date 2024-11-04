@@ -1,20 +1,54 @@
-// transpiler.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
+#include <fstream>
+#include <filesystem>
+#include <string>
 
-int main()
-{
-    std::cout << "Hello World!\n";
+int main(int argc, char *argv[], char *env[]) {
+
+    if (argc != 2) {
+        std::cerr << "Usage: ./transpiler <source>" << std::endl;
+        return 1;
+    }
+
+    std::string source = argv[1];
+    std::string filename = source.substr(0, source.length() - 4);
+    std::string extension = source.substr(source.length() - 4, source.length() - 1);
+
+    if (!std::filesystem::exists(source)) {
+        std::cerr << "Error: " << source << " file does not exist" << std::endl;
+        return 1; 
+    }
+
+    std::ifstream sourceFile(source);
+
+    if (!sourceFile.is_open()) {
+        std::cerr << "Error: could not open file " << source << std::endl;
+        return 1;
+    }
+
+    // Contents of source file
+    std::vector<std::string> lines;
+
+    std::string line;
+    while (std::getline(sourceFile, line)) {
+        std::cout << "read: " << line << std::endl;
+        lines.push_back(line);
+    }
+
+    std::ofstream destinationFile(filename + ".c");
+    for (size_t i = 0; i < lines.size(); i++) {
+        destinationFile << lines.at(i) << std::endl;
+    }
+
+    std::string command = "gcc " + filename + ".c -o " + filename;
+
+    system(command.c_str());
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+// How this file is supposed to work: 
+//   1. Use the command line arguments to gather the souce code filename
+//   2. Open and copy all text in the source code file
+//   3. Pass all source text to the transpiler
+//   4. Create a new file based on the source code filename
+//   5. Stream all transpiled text to the new file
+//   6. Compile the new file
