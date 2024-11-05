@@ -1,10 +1,9 @@
 .git
+.vs
 
-src/transpiler/.vs
-src/transpiler/transpiler
-src/transpiler/x64
-src/transpiler/transpiler.vcxproj
-src/transpiler/transpiler.vcxproj.filters
-src/transpiler/transpiler.vcxproj.user
+*/x64
+*/x86
 
-
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
