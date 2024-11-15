@@ -1,2 +1,2 @@
 # csquared
-Repo containing the csquared compiler
+Repo containing the csquared transpiler
