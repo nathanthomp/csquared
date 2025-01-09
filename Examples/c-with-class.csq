@@ -1,0 +1,23 @@
+
+class my_class {
+    int i;
+
+    public my_class(int i) {
+        i = i;
+    }
+
+    public int my_public_method() {
+        return i;
+    }
+
+    private int my_private_method() {
+        return i;
+    }
+}
+
+int main() {
+    my_class c = new my_class();
+    int i = c.my_public_method();
+
+    return i;
+}
